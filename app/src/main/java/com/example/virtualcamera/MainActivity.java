@@ -41,13 +41,48 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Force a simple layout first to debug if XML inflation is the issue
+        // setContentView(R.layout.activity_main); 
+        
+        // Let's create a layout programmatically to rule out XML issues entirely
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(32, 32, 32, 32);
+        
+        TextView title = new TextView(this);
+        title.setText("Virtual Camera Debug Mode");
+        title.setTextSize(24);
+        layout.addView(title);
+        
+        tvVideoPath = new TextView(this);
+        tvVideoPath.setText("Video Path: Loading...");
+        layout.addView(tvVideoPath);
+        
+        btnSelectVideo = new Button(this);
+        btnSelectVideo.setText("Select Video");
+        layout.addView(btnSelectVideo);
+        
+        videoPreview = new VideoView(this);
+        layout.addView(videoPreview, new android.widget.LinearLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT, 500));
+            
+        btnRefreshLogs = new Button(this);
+        btnRefreshLogs.setText("Refresh Logs");
+        layout.addView(btnRefreshLogs);
+        
+        tvLogs = new TextView(this);
+        tvLogs.setText("Logs will appear here...");
+        android.widget.ScrollView scrollView = new android.widget.ScrollView(this);
+        scrollView.addView(tvLogs);
+        layout.addView(scrollView);
+        
+        setContentView(layout);
 
-        tvVideoPath = findViewById(R.id.tv_video_path);
-        videoPreview = findViewById(R.id.video_preview);
-        tvLogs = findViewById(R.id.tv_logs);
-        btnSelectVideo = findViewById(R.id.btn_select_video);
-        btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
+        // tvVideoPath = findViewById(R.id.tv_video_path);
+        // videoPreview = findViewById(R.id.video_preview);
+        // tvLogs = findViewById(R.id.tv_logs);
+        // btnSelectVideo = findViewById(R.id.btn_select_video);
+        // btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
 
         checkPermissions();
         loadConfig();
