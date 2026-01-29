@@ -96,27 +96,31 @@ public class MainActivity extends Activity {
     }
 
     private void saveVideoToSdCard(Uri sourceUri) {
-        try {
-            InputStream is = getContentResolver().openInputStream(sourceUri);
-            File destFile = new File(DEFAULT_VIDEO_PATH);
-            OutputStream os = new FileOutputStream(destFile);
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
+        new Thread(() -> {
+            try {
+                InputStream is = getContentResolver().openInputStream(sourceUri);
+                File destFile = new File(DEFAULT_VIDEO_PATH);
+                OutputStream os = new FileOutputStream(destFile);
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+                os.close();
+                is.close();
+                
+                // Update config to point to this file (redundant if we overwrite default, but good for future)
+                saveConfig(DEFAULT_VIDEO_PATH);
+                
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Video saved to " + DEFAULT_VIDEO_PATH, Toast.LENGTH_SHORT).show();
+                    updateUI(DEFAULT_VIDEO_PATH);
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Failed to save video: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
-            os.close();
-            is.close();
-            
-            // Update config to point to this file (redundant if we overwrite default, but good for future)
-            saveConfig(DEFAULT_VIDEO_PATH);
-            
-            Toast.makeText(this, "Video saved to " + DEFAULT_VIDEO_PATH, Toast.LENGTH_SHORT).show();
-            updateUI(DEFAULT_VIDEO_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to save video: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        }).start();
     }
 
     private void saveConfig(String path) {
