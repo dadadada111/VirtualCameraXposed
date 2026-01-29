@@ -32,7 +32,9 @@ jobs:
         # because "Process completed with exit code 1" hides the actual compilation error.
 
     - name: Build with Gradle
-      run: gradle assembleDebug --no-daemon --stacktrace --info
+      run: |
+        gradle clean
+        gradle assembleDebug --no-daemon --stacktrace --info
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
