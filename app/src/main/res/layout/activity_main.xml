@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Virtual Camera Configuration"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_select_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Video File" />
+
+    <TextView
+        android:id="@+id/tv_video_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current Video: /sdcard/virtual_camera.mp4 (Default)"
+        android:layout_marginBottom="16dp"/>
+
+    <VideoView
+        android:id="@+id/video_preview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="16dp"
+        android:background="#EEE"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Module Logs:"
+        android:textStyle="bold"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#333333">
+        <TextView
+            android:id="@+id/tv_logs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#00FF00"
+            android:padding="8dp"
+            android:text="Logs will appear here..."
+            android:typeface="monospace"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_refresh_logs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refresh Logs" />
+
+</LinearLayout>
