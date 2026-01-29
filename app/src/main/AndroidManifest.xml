@@ -9,6 +9,7 @@
     <application
         android:label="Virtual Camera Hook"
         android:requestLegacyExternalStorage="true"
+        android:theme="@android:style/Theme.DeviceDefault.Light"
         android:icon="@mipmap/ic_launcher">
         
         <meta-data

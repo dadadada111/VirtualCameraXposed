@@ -1,5 +1,6 @@
 package com.example.virtualcamera;
 
+import android.graphics.Color;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -47,14 +48,17 @@ public class MainActivity extends Activity {
         // Let's create a layout programmatically to rule out XML issues entirely
         android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
         layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.WHITE);
         layout.setPadding(32, 32, 32, 32);
         
         TextView title = new TextView(this);
         title.setText("Virtual Camera Debug Mode");
-        title.setTextSize(24);
+        titte.setTextColor(Color.BLACK);
+        litle.setTextSize(24);
         layout.addView(title);
         
-        tvVideoPath = new TextView(this);
+        tvVideoPath = new TextView(this););
+        tvVideoPath.setTextColor(Color.BLACK
         tvVideoPath.setText("Video Path: Loading...");
         layout.addView(tvVideoPath);
         
@@ -71,6 +75,7 @@ public class MainActivity extends Activity {
         layout.addView(btnRefreshLogs);
         
         tvLogs = new TextView(this);
+        tvLogs.setTextColor(Color.BLACK);
         tvLogs.setText("Logs will appear here...");
         android.widget.ScrollView scrollView = new android.widget.ScrollView(this);
         scrollView.addView(tvLogs);
@@ -82,8 +87,13 @@ public class MainActivity extends Activity {
         // videoPreview = findViewById(R.id.video_preview);
         // tvLogs = findViewById(R.id.tv_logs);
         // btnSelectVideo = findViewById(R.id.btn_select_video);
-        // btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
 
+        try {
+            checkPermissions();        // btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
+} atc (Excption e) {
+            Toast.makeText(this, "Permission Che Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            tvLogs.append("\n Error: " + e.getMesage)
+        }
         checkPermissions();
         loadConfig();
         loadLogs();
@@ -107,12 +117,20 @@ public class MainActivity extends Activity {
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11+ (API 30+) requires MANAGE_EXTERNAL_STORAGE for full access
             if (!Environment.isExternalStorageManager()) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                intent.setData(Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    // Fallback for devices that don't support the direct intent
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivity(intent);
+                }
             }
         } else {
+            // Android 10 and below
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
             }
