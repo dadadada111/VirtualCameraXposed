@@ -53,12 +53,12 @@ public class MainActivity extends Activity {
         
         TextView title = new TextView(this);
         title.setText("Virtual Camera Debug Mode");
-        titte.setTextColor(Color.BLACK);
-        litle.setTextSize(24);
+        title.setTextColor(Color.BLACK);
+        title.setTextSize(24);
         layout.addView(title);
         
-        tvVideoPath = new TextView(this););
-        tvVideoPath.setTextColor(Color.BLACK
+        tvVideoPath = new TextView(this);
+        tvVideoPath.setTextColor(Color.BLACK);
         tvVideoPath.setText("Video Path: Loading...");
         layout.addView(tvVideoPath);
         
@@ -87,14 +87,15 @@ public class MainActivity extends Activity {
         // videoPreview = findViewById(R.id.video_preview);
         // tvLogs = findViewById(R.id.tv_logs);
         // btnSelectVideo = findViewById(R.id.btn_select_video);
+        // btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
 
         try {
-            checkPermissions();        // btnRefreshLogs = findViewById(R.id.btn_refresh_logs);
-} atc (Excption e) {
-            Toast.makeText(this, "Permission Che Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            tvLogs.append("\n Error: " + e.getMesage)
+            checkPermissions();
+        } catch (Exception e) {
+            Toast.makeText(this, "Permission Check Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            tvLogs.append("\nPermission Error: " + e.getMessage());
         }
-        checkPermissions();
+        
         loadConfig();
         loadLogs();
 
