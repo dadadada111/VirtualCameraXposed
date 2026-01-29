@@ -23,9 +23,16 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: 8.0.2
+        cache-read-only: false 
+        # Caching seems to be causing issues with GitHub Actions currently, 
+        # so we rely on setup-gradle's default behavior but acknowledge the instability.
+        # If it fails again, we might need to disable caching explicitly if possible, 
+        # though setup-gradle enables it by default.
+        # Let's try to update the build command to be more verbose to see the REAL error
+        # because "Process completed with exit code 1" hides the actual compilation error.
 
     - name: Build with Gradle
-      run: gradle assembleRelease --no-daemon
+      run: gradle assembleRelease --no-daemon --stacktrace --info
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
