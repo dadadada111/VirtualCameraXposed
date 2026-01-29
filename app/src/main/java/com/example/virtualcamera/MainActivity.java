@@ -134,50 +134,63 @@ public class MainActivity extends Activity {
     }
 
     private void loadConfig() {
-        File configFile = new File(CONFIG_FILE_PATH);
-        String path = DEFAULT_VIDEO_PATH;
-        if (configFile.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(configFile));
-                String line = br.readLine();
-                if (line != null && !line.trim().isEmpty()) {
-                    path = line.trim();
+        new Thread(() -> {
+            File configFile = new File(CONFIG_FILE_PATH);
+            String path = DEFAULT_VIDEO_PATH;
+            if (configFile.exists()) {
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(configFile));
+                    String line = br.readLine();
+                    if (line != null && !line.trim().isEmpty()) {
+                        path = line.trim();
+                    }
+                    br.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
-        updateUI(path);
+            final String finalPath = path;
+            runOnUiThread(() -> updateUI(finalPath));
+        }).start();
     }
 
     private void updateUI(String path) {
         tvVideoPath.setText("Current Video: " + path);
-        videoPreview.setVideoPath(path);
-        videoPreview.start();
+        try {
+            videoPreview.setVideoPath(path);
+            videoPreview.start();
+        } catch (Exception e) {
+            Toast.makeText(this, "Preview failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadLogs() {
-        File logFile = new File(LOG_FILE_PATH);
-        if (!logFile.exists()) {
-            tvLogs.setText("No logs found at " + LOG_FILE_PATH);
-            return;
-        }
-
-        StringBuilder logs = new StringBuilder();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(logFile));
-            String line;
-            while ((line = br.readLine()) != null) {
-                logs.append(line).append("\n");
-            }
-            br.close();
+        new Thread(() -> {
+            final StringBuilder logs = new StringBuilder();
+            File logFile = new File(LOG_FILE_PATH);
             
-            // Scroll to bottom
-            tvLogs.setText(logs.toString());
-            // TODO: Auto scroll
-        } catch (IOException e) {
-            tvLogs.setText("Error reading logs: " + e.getMessage());
-        }
+            if (!logFile.exists()) {
+                logs.append("No logs found at ").append(LOG_FILE_PATH).append("\n");
+                logs.append("Make sure the module is active and target app has storage permission.");
+            } else {
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(logFile));
+                    String line;
+                    // Read last 100 lines to avoid OOM
+                    // Simplified: just read all for now, but catch exceptions
+                    while ((line = br.readLine()) != null) {
+                        logs.append(line).append("\n");
+                    }
+                    br.close();
+                } catch (Exception e) {
+                    logs.append("Error reading logs: ").append(e.getMessage());
+                }
+            }
+
+            runOnUiThread(() -> {
+                tvLogs.setText(logs.toString());
+                // Scroll to bottom could be added here
+            });
+        }).start();
     }
 }

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Virtual Camera Configuration"
+        android:text="虚拟摄像头配置"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
@@ -17,13 +17,13 @@
         android:id="@+id/btn_select_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Video File" />
+        android:text="选择视频文件" />
 
     <TextView
         android:id="@+id/tv_video_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Current Video: /sdcard/virtual_camera.mp4 (Default)"
+        android:text="当前视频: /sdcard/virtual_camera.mp4 (默认)"
         android:layout_marginBottom="16dp"/>
 
     <VideoView
@@ -36,7 +36,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Module Logs:"
+        android:text="模块日志："
         android:textStyle="bold"/>
 
     <ScrollView
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textColor="#00FF00"
             android:padding="8dp"
-            android:text="Logs will appear here..."
+            android:text="日志会显示在这里……"
             android:typeface="monospace"/>
     </ScrollView>
 
@@ -58,6 +58,6 @@
         android:id="@+id/btn_refresh_logs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Refresh Logs" />
+        android:text="刷新日志" />
 
 </LinearLayout>
